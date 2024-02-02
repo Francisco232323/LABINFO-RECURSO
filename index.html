@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bootstrap Example</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        var dadosVendas = [
+            { "id":1,"mes": "Janeiro", "vendas": 24 },
+            { "id":2,"mes": "Fevereiro", "vendas": 45 },
+            { "id":3,"mes": "Março", "vendas": 78 },
+            { "id":4,"mes": "Abril", "vendas": 22 },
+            { "id":5,"mes": "Maio", "vendas": 56 },
+            { "id":6,"mes": "Junho", "vendas": 89 },
+            { "id":7,"mes": "Julho", "vendas": 90 },
+            { "id":8,"mes": "Agosto", "vendas": 32 },
+            { "id":9,"mes": "Setembro", "vendas": 65 },
+            { "id":10,"mes": "Outubro", "vendas": 43 },
+            { "id":11,"mes": "Novembro", "vendas": 72 },
+            { "id":12,"mes": "Dezembro", "vendas": 99 }
+        ];
+
+        function adicionarTabelaNaPagina() {
+            var container = document.querySelector('.container');
+
+            var rowContainer = document.createElement('div');
+            rowContainer.classList.add('row');
+            container.appendChild(rowContainer);
+
+            var tabelaColumn = document.createElement('div');
+            tabelaColumn.classList.add('col-md-6'); 
+            rowContainer.appendChild(tabelaColumn);
+
+            var tabela = document.createElement('table');
+            tabela.classList.add('table');
+
+            var cabecalho = tabela.createTHead();
+            var linhaCabecalho = cabecalho.insertRow();
+            Object.keys(dadosVendas[0]).forEach(function(chave) {
+                var th = document.createElement('th');
+                th.textContent = chave.charAt(0).toUpperCase() + chave.slice(1);
+                linhaCabecalho.appendChild(th);
+            });
+
+            var corpoTabela = tabela.createTBody();
+            dadosVendas.forEach(function(dado) {
+                var linha = corpoTabela.insertRow();
+                Object.values(dado).forEach(function(valor) {
+                    var celula = linha.insertCell();
+                    celula.textContent = valor;
+                });
+            });
+
+            tabelaColumn.appendChild(tabela);
+
+            var graficoColumn = document.createElement('div');
+            graficoColumn.classList.add('col-md-6'); 
+            rowContainer.appendChild(graficoColumn);
+
+            var canvas = document.createElement('canvas');
+            canvas.id = 'grafico';
+            graficoColumn.appendChild(canvas);
+
+            var ctx = canvas.getContext('2d');
+
+            var config = {
+                type: 'bar',
+                data: {
+                    labels: dadosVendas.map(function(dado) { return dado.mes; }),
+                    datasets: [{
+                        label: 'Vendas por Mês',
+                        data: dadosVendas.map(function(dado) { return dado.vendas; }),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            var myChart = new Chart(ctx, config);
+        }
+
+        window.onload = function() {
+            adicionarTabelaNaPagina();
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Prova de recurso Lab Info</h1>
+    </div>
+</body>
+</html>
